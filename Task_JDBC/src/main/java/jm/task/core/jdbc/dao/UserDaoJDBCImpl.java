@@ -14,7 +14,7 @@ public class UserDaoJDBCImpl implements UserDao {
     private Connection con;
     
     public UserDaoJDBCImpl() {
-        this.con = Util.getConnection();
+        this.con = Util.INSTANCE.getConnection();
     }
     
     private static boolean isTableExists(Connection con) throws SQLException {
@@ -52,18 +52,14 @@ public class UserDaoJDBCImpl implements UserDao {
     @Override
     public void saveUser(String name, String lastName, byte age) {
         try {
-            if (isTableExists(con)) {
-                long id = new Random().nextInt();
-                PreparedStatement saveUser = con.prepareStatement("INSERT INTO USERS VALUES (?, ?, ?, ?)");
-                saveUser.setLong(1, id);
-                saveUser.setString(2, name);
-                saveUser.setString(3, lastName);
-                saveUser.setByte(4, age);
-                saveUser.executeUpdate();
-                System.out.println("User " + name + " добавлен в базу данных");
-            } else {
-                System.out.println("Таблица USERS не существует!");
-            }
+            long id = new Random().nextInt();
+            PreparedStatement saveUser = con.prepareStatement("INSERT INTO USERS VALUES (?, ?, ?, ?)");
+            saveUser.setLong(1, id);
+            saveUser.setString(2, name);
+            saveUser.setString(3, lastName);
+            saveUser.setByte(4, age);
+            saveUser.executeUpdate();
+            System.out.println("User " + name + " добавлен в базу данных");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -71,11 +67,9 @@ public class UserDaoJDBCImpl implements UserDao {
     @Override
     public void removeUserById(long id) {
         try {
-            if (isTableExists(con)) {
-                con.createStatement().executeUpdate("DELETE FROM USERS WHERE id = " + id);
-            } else {
-                System.out.println("Таблица USERS не существует!");
-            }
+            PreparedStatement removeUserById = con.prepareStatement("DELETE FROM USERS WHERE id = ?");
+            removeUserById.setLong(1, id);
+            removeUserById.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -84,16 +78,12 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> list = null;
         try {
-            if (isTableExists(con)) {
-                list = new ArrayList<>();
-                ResultSet rs = con.createStatement().executeQuery("SELECT * FROM USERS");
-                while (rs.next()) {
-                    User user = new User(rs.getString(2), rs.getString(3), rs.getByte(4));
-                    user.setId(rs.getLong(1));
-                    list.add(user);
-                }
-            } else {
-                System.out.println("Таблица USERS не существует!");
+            list = new ArrayList<>();
+            ResultSet rs = con.prepareStatement("SELECT * FROM USERS").executeQuery();
+            while (rs.next()) {
+                User user = new User(rs.getString(2), rs.getString(3), rs.getByte(4));
+                user.setId(rs.getLong(1));
+                list.add(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -103,16 +93,12 @@ public class UserDaoJDBCImpl implements UserDao {
     @Override
     public void cleanUsersTable() {
         try {
-            if (isTableExists(con)) {
-                con.createStatement().executeUpdate("TRUNCATE TABLE USERS");
-                System.out.println("Таблица USERS очищена");
-            } else {
-                System.out.println("Таблица USERS не существует!");
-            }
+            con.createStatement().executeUpdate("TRUNCATE TABLE USERS");
+            System.out.println("Таблица USERS очищена");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }  
+    }
     @Override
     public void close() {
         try {

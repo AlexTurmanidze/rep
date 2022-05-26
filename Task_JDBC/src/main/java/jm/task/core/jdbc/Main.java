@@ -16,12 +16,10 @@ public class Main {
         
         userService.getAllUsers().forEach(System.out::println);
         
-//        userService.removeUserById(-934513269);
+//        userService.removeUserById(516789158);
 //        userService.getAllUsers().forEach(System.out::println);
         
         userService.cleanUsersTable();
-        userService.getAllUsers().forEach(System.out::println);
-        
         userService.dropUsersTable();
         
         userService.close();
