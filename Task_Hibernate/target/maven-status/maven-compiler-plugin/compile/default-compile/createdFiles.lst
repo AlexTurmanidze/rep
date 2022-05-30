@@ -1,0 +1,7 @@
+jm\task\core\hibernate\service\UserServiceImpl.class
+jm\task\core\hibernate\model\User.class
+jm\task\core\hibernate\Main.class
+jm\task\core\hibernate\dao\UserDaoHibernateImpl.class
+jm\task\core\hibernate\service\UserService.class
+jm\task\core\hibernate\util\Util.class
+jm\task\core\hibernate\dao\UserDao.class
