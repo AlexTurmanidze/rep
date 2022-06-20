@@ -1,5 +1,0 @@
-web\config\WebConfig.class
-web\controller\HelloController.class
-web\controller\CarsController.class
-web\config\AppInit.class
-web\model\Car.class
