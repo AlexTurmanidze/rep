@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head xmlns:th="http://www.thymeleaf.org">
+        <title>User</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <style>
+            form {
+                margin: 1% 0% 0% 0%; 
+            }
+        </style>
+    </head>
+    <body>
+        <h1>User</h1>
+        <form th:object="${user}">
+            <div>
+                <label>First Name: </label>
+                <span th:text="*{firstName}"></span>
+            </div>
+            <div>
+                <label>Last Name: </label>
+                <span th:text="*{lastName}"></span>
+            </div>
+            <div>
+                <label>Email(Login): </label>
+                <span th:text="*{email}"></span>
+            </div>
+        </form>
+        <div>
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Sign Out"/>
+            </form>
+        </div>
+    </body>
+</html>
